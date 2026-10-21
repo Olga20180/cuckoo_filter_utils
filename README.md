@@ -29,3 +29,10 @@ Inserts can raise ``FilterFull`` once the filter approaches capacity. This is
 intentional and non-silent: rebuild with a larger capacity rather than
 silently dropping items. Duplicate inserts are counted, so call ``delete``
 once per duplicate to fully remove an item.
+
+## Design notes
+
+The window stores values eagerly rather than keeping running aggregates. Running
+sums drift with floating point over long streams, and recomputing from a small
+buffer is cheap enough that the drift is not worth the speed.
+
